@@ -10,7 +10,7 @@ SRC = $(wildcard $(SRCDIR)/*.*)
 OBJ = $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SRC))
 LIB = -lbcm2835
 
-TARGET = $(BINDIR)/pi-gamepad
+TARGET = $(BINDIR)/pipad
 
 $(TARGET): compile
 	@echo "Building"
