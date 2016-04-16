@@ -8,7 +8,7 @@ OBJDIR = obj
 INC = $(wildcard $(INCDIR)/*.*)
 SRC = $(wildcard $(SRCDIR)/*.*)
 OBJ = $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SRC))
-LIB = 
+LIB = -lbcm2835
 
 TARGET = $(BINDIR)/pi-gamepad
 
