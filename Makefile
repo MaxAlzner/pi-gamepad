@@ -15,16 +15,23 @@ TARGET = $(BINDIR)/pipad
 $(TARGET): compile
 	@echo "Building"
 	@mkdir -p $(BINDIR)
-	$(CC) -o $@ $(OBJ) $(CFLAGS) $(LIB)
+	$(CC) -shared -o $(BINDIR)/libpipad.so $(OBJDIR)/pipad.o $(CFLAGS)
+	$(CC) -o $@ $(OBJDIR)/main.o $(BINDIR)/libpipad.so $(CFLAGS) $(LIB)
 
 .PHONY: compile
 compile:
 	@echo "Compiling"
 	@mkdir -p $(OBJDIR)
-	@$(foreach target,$(SRC),echo $(target);$(CC) -c -o $(subst $(SRCDIR)/,$(OBJDIR)/,$(subst .cpp,.o,$(target))) $(target) $(CFLAGS);)
+	$(CC) -c -o $(OBJDIR)/main.o $(SRCDIR)/main.cpp $(CFLAGS)
+	$(CC) -c -o $(OBJDIR)/pipad.o $(SRCDIR)/pipad.cpp $(CFLAGS) -fpic
 
 .PHONY: clean
 clean:
 	@echo "Cleaning"
 	@rm -rf $(OBJDIR)
 	@rm -rf $(BINDIR)
+
+.PHONY: install
+install:
+	@mkdir -p ~/.pipad
+	@cp -f gpio.ini ~/.pipad/
