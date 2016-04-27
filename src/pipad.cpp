@@ -76,7 +76,7 @@ namespace pipad
         bcm2835_close();
     }
     
-    void poll(const gamepad_t& e)
+    void poll(gamepad_t& e)
     {
         bcm2835_gpio_write(pins.cd4021_1_psc, 1);
         bcm2835_delayMicroseconds(20);
@@ -84,12 +84,14 @@ namespace pipad
         for (uint8_t i = 0; i < 8; i++)
         {
             bcm2835_gpio_write(pins.cd4021_1_clk, 0);
-            //bcm2835_delayMicroseconds(1);
+            bcm2835_delayMicroseconds(1);
             uint8_t btn = bcm2835_gpio_lev(pins.cd4021_1_data);
-            printf("  button %d = %d\n", i, btn);
             bcm2835_gpio_write(pins.cd4021_1_clk, 1);
+            //printf("  button %d = %d\n", i, btn);
+            e.buttons[i] = btn;
         }
         
+        //printf("\n");
         for (uint8_t i = 0; i < 8; i++)
         {
             bcm2835_gpio_write(pins.mcp3008_1_cs, 1);
@@ -114,9 +116,10 @@ namespace pipad
                 analog |= bcm2835_gpio_lev(pins.mcp3008_1_dout) ? 1 : 0;
             }
             
-            printf("  analog %d = %d\n", i, analog);
+            analog >>= 1;
+            bcm2835_gpio_write(pins.mcp3008_1_cs, 1);
+            //printf("  analog %d = %d\n", i, analog);
+            e.analogs[i] = analog;
         }
-        
-        bcm2835_gpio_write(pins.mcp3008_1_cs, 1);
     }
 }

@@ -5,7 +5,7 @@ INCDIR = include
 SRCDIR = src
 BINDIR = bin
 OBJDIR = obj
-LIB = -lbcm2835
+LIB = -lbcm2835 -lncurses
 
 TARGET = $(BINDIR)/pipad
 
