@@ -36,7 +36,7 @@ int main(int argc, char** argv)
         printw("    thumb R Y  = %d\n", pad.thumbRY);
         printw("    trigger L  = %d\n", pad.triggerL);
         printw("    trigger R  = %d\n", pad.triggerR);
-        printw("    value      = %d\n", pad.volume);
+        printw("    volume     = %d\n", pad.volume);
         printw("    battery    = %d\n", pad.battery);
 #endif
         wrefresh(win);
