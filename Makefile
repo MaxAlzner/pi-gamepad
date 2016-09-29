@@ -5,7 +5,7 @@ INCDIR = include
 SRCDIR = src
 BINDIR = bin
 OBJDIR = obj
-LIB = -lbcm2835 -lncurses
+LIB = -lwiringPi -pthread -lncurses
 
 TARGET = $(BINDIR)/pipad
 

@@ -8,7 +8,7 @@
 #include <fstream>
 #include <sstream>
 
-#include <bcm2835.h>
+#include <wiringPi.h>
 
 namespace pipad
 {
