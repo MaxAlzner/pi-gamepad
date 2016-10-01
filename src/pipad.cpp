@@ -119,16 +119,18 @@ namespace pipad
                 digitalWrite(pins.mcp3008_1_clk, 1);
                 digitalWrite(pins.mcp3008_1_clk, 0);
                 analog <<= 1;
-                analog |= digitalRead(pins.mcp3008_1_dout) ? 1 : 0;
+                if (digitalRead(pins.mcp3008_1_dout))
+                {
+                    analog |= 0x1;
+                }
             }
             
+            digitalWrite(pins.mcp3008_1_cs, 1);
             analog >>= 1;
 #if _DEBUG
             printf("  analog %d = %d\n", i, analog);
 #endif
             e.analogs[i] = analog;
         }
-        
-        digitalWrite(pins.mcp3008_1_cs, 1);
     }
 }
