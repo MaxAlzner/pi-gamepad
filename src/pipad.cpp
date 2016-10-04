@@ -152,6 +152,39 @@ namespace pipad
 #endif
             e.analogs[i] = analog;
         }
+        
+        /// arduino test
+        int num = 4;
+        digitalWrite(pins.mcp3008_1_cs, 1);
+        digitalWrite(pins.mcp3008_1_clk, 0);
+        digitalWrite(pins.mcp3008_1_cs, 0);
+        int8_t cmdout = num;
+        cmdout |= 0x18;
+        cmdout <<= 3;
+        for (int8_t i = 0; i < 5; i++)
+        {
+            if (cmdout & 0x80) digitalWrite(pins.mcp3008_1_din, 1);
+            else digitalWrite(pins.mcp3008_1_din, 0);
+            cmdout <<= 1;
+            digitalWrite(pins.mcp3008_1_clk, 1);
+            digitalWrite(pins.mcp3008_1_clk, 0);
+        }
+        
+        int16_t adcout = 0;
+        for (int8_t i = 0; i < 12; i++)
+        {
+            digitalWrite(pins.mcp3008_1_clk, 1);
+            digitalWrite(pins.mcp3008_1_clk, 0);
+            adcout <<= 1;
+            if (digitalRead(pins.mcp3008_1_dout)) adcout |= 0x1;
+        }
+        
+        digitalWrite(pins.mcp3008_1_cs, 1);
+        adcout >>= 1;
+        printw("\n");
+        printw("  adc test = %d\n", adcout);
+        /// arduino test
+        
 #if defined(_DEBUG)
         wrefresh(win);
 #endif
