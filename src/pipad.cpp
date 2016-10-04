@@ -99,8 +99,6 @@ namespace pipad
     {
 #if defined(_DEBUG)
         wmove(win, 0, 0);
-        printw("%f second(s)\n", last);
-        printw("\n");
 #endif
         digitalWrite(pins.cd4021_1_psc, 1);
         delayMicroseconds(20);
@@ -150,7 +148,7 @@ namespace pipad
             digitalWrite(pins.mcp3008_1_cs, 1);
             analog >>= 1;
 #if defined(_DEBUG)
-            printwprintw("  analog %d = %d\n", i, analog);
+            printw("  analog %d = %d\n", i, analog);
 #endif
             e.analogs[i] = analog;
         }

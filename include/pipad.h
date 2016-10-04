@@ -1,5 +1,7 @@
 #pragma once
 
+#define _DEBUG 1
+
 #include <stdlib.h>
 #include <stdint.h>
 #include <unistd.h>

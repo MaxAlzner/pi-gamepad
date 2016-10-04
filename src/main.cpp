@@ -1,5 +1,4 @@
 
-#define _DEBUG 1
 #include "../include/pipad.h"
 #include <stdio.h>
 #include <time.h>
