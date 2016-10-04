@@ -1,15 +1,15 @@
 
+#define _DEBUG 1
 #include "../include/pipad.h"
 #include <stdio.h>
 #include <time.h>
-#include <curses.h>
 
 int main(int argc, char** argv)
 {
     pipad::start();
-    WINDOW* win = initscr();
-    noecho();
-    wclear(win);
+    // WINDOW* win = initscr();
+    // noecho();
+    // wclear(win);
     time_t start;
     time(&start);
     double last = 0.0;
@@ -17,10 +17,10 @@ int main(int argc, char** argv)
     {
         static pipad::gamepad_t pad;
         pipad::poll(pad);
-        wmove(win, 0, 0);
-        printw("%f second(s)\n", last);
-        printw("\n");
-#if 1
+        // wmove(win, 0, 0);
+        // printw("%f second(s)\n", last);
+        // printw("\n");
+#if 0
         printw("  gamepad : \n");
         printw("    a          = %d\n", pad.a);
         printw("    b          = %d\n", pad.b);
@@ -39,10 +39,10 @@ int main(int argc, char** argv)
         printw("    volume     = %d\n", pad.volume);
         printw("    battery    = %d\n", pad.battery);
 #endif
-        wrefresh(win);
+        // wrefresh(win);
     }
     
-    endwin();
+    // endwin();
     pipad::close();
     return 0;
 }

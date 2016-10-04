@@ -1,6 +1,10 @@
 
 #include "../include/pipad.h"
 
+#if defined(_DEBUG)
+#include <curses.h>
+#endif
+
 inline std::string trim(const std::string& str)
 {
 	size_t first = str.find_first_not_of(' ');
@@ -10,6 +14,10 @@ inline std::string trim(const std::string& str)
 
 namespace pipad
 {
+#if defined(_DEBUG)
+    static WINDOW* win = 0;
+#endif
+    
     static struct
     {
         struct
@@ -28,7 +36,7 @@ namespace pipad
     void start()
     {
         std::string filename(std::string(getenv("HOME")) + "/.pipad/gpio.ini");
-#if _DEBUG
+#if defined(_DEBUG)
         printf("%s\n", filename.c_str());
 #endif
     	std::ifstream file(filename.c_str());
@@ -42,7 +50,7 @@ namespace pipad
     				size_t seperator = line.find_first_of('=');
     				std::string key = trim(line.substr(0, seperator));
     				std::string value = trim(line.substr(seperator + 1));
-#if _DEBUG
+#if defined(_DEBUG)
     				printf("  %s = %s\n", key.c_str(), value.c_str());
 #endif
     				GPIO_GAMEPAD index = GPIO_GAMEPAD_INVALID;
@@ -73,13 +81,27 @@ namespace pipad
         pinMode(pins.mcp3008_1_dout, INPUT);
         pinMode(pins.mcp3008_1_din, OUTPUT);
         pinMode(pins.mcp3008_1_cs, OUTPUT);
+        
+#if defined(_DEBUG)
+        win = initscr();
+        noecho();
+        wclear(win);
+#endif
     }
     void close()
     {
+#if defined(_DEBUG)
+        endwin();
+#endif
     }
     
     void poll(gamepad_t& e)
     {
+#if defined(_DEBUG)
+        wmove(win, 0, 0);
+        printw("%f second(s)\n", last);
+        printw("\n");
+#endif
         digitalWrite(pins.cd4021_1_psc, 1);
         delayMicroseconds(20);
         digitalWrite(pins.cd4021_1_psc, 0);
@@ -89,14 +111,14 @@ namespace pipad
             delayMicroseconds(1);
             uint8_t btn = digitalRead(pins.cd4021_1_data);
             digitalWrite(pins.cd4021_1_clk, 1);
-#if _DEBUG
-            printf("  button %d = %d\n", i, btn);
+#if defined(_DEBUG)
+            printw("  button %d = %d\n", i, btn);
 #endif
             e.buttons[i] = btn;
         }
         
-#if _DEBUG
-        printf("\n");
+#if defined(_DEBUG)
+        printw("\n");
 #endif
         for (uint8_t i = 0; i < 8; i++)
         {
@@ -127,10 +149,13 @@ namespace pipad
             
             digitalWrite(pins.mcp3008_1_cs, 1);
             analog >>= 1;
-#if _DEBUG
-            printf("  analog %d = %d\n", i, analog);
+#if defined(_DEBUG)
+            printwprintw("  analog %d = %d\n", i, analog);
 #endif
             e.analogs[i] = analog;
         }
+#if defined(_DEBUG)
+        wrefresh(win);
+#endif
     }
 }
